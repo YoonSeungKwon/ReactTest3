@@ -1,7 +1,6 @@
 package yoon.test.reactTest3.vo.response;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import yoon.test.reactTest3.enums.StatusEnums;
 
