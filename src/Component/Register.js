@@ -21,35 +21,40 @@ const Register = () =>{
             ...prevState,
             [id] : value
         }))
+        if(id==="email")
+            setCheck(false)
     }
 
-    /*개발중*/
     const handleCheckEmail = () =>{
-        axios.get("/api/v1/member/${state.email}/exists"
+        axios.get('/api/v1/members/'+state.email+'/exists'
         ).then(function(response){
             console.log(response)
             setCheck(true)
             alert(response.data)
         }).catch(function(error){
             console.log(error)
+            setCheck(false)
             alert(error.response.data)
         })
     }
-    /**/
 
     const handleSubmit = () =>{
-        axios.post("/api/v1/members/join", state
-        ).then(function(response){
-                console.log(response)
-                alert("회원가입 성공")
-                navigate("/api/v1/login")
-            }
-        ).catch(function (error){
-                console.log(error.response)
-                alert(error.response.data)
-                navigate("/api/v1/register")
-            }
-        )
+        if(check) {
+            axios.post("/api/v1/members/join", state
+            ).then(function (response) {
+                    console.log(response)
+                    alert(response.data.message)
+                    navigate("/api/v1/login")
+                }
+            ).catch(function (error) {
+                    console.log(error.response)
+                    alert(error.response.data)
+                    navigate("/api/v1/register")
+                }
+            )
+        }
+        else
+            alert("이메일 중복체크를 하세요.")
 
     }
 
@@ -86,6 +91,8 @@ const Register = () =>{
                 value="Register"
                 onClick={handleSubmit}
             />
+
+            <h4>{check}</h4>
         </>
     )
 }
