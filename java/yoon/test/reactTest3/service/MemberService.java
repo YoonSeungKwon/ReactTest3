@@ -16,13 +16,15 @@ import yoon.test.reactTest3.vo.request.MemberDto;
 import yoon.test.reactTest3.vo.request.MemberRequest;
 import yoon.test.reactTest3.vo.response.MemberResponse;
 
+import java.lang.reflect.Member;
+
 @Service
 @RequiredArgsConstructor
 public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     private MemberResponse toResponse(Members member){
         return new MemberResponse(member.getEmail(), member.getName(), member.getRoleValue(), member.getRegdate());
@@ -38,7 +40,7 @@ public class MemberService {
 
         Members member = Members.builder()
                 .email(dto.getEmail())
-                .password(bCryptPasswordEncoder.encode(dto.getPassword()))
+                .password(passwordEncoder.encode(dto.getPassword()))
                 .name(dto.getName())
                 .role(Role.USER)
                 .build();
@@ -57,7 +59,7 @@ public class MemberService {
             System.out.println("UsernameNotFound : " + username);
             throw new UsernameNotFoundException(username);
         }
-        if(!bCryptPasswordEncoder.matches(password, member.getPassword())) {
+        if(!passwordEncoder.matches(password, member.getPassword())) {
             System.out.println("BadCredential : " + username);
             throw new BadCredentialsException(username);
         }
@@ -68,4 +70,14 @@ public class MemberService {
         return toResponse(member);
     }
 
+    public Members findMemberByEmail(String email)throws UsernameNotFoundException{
+        Members member = memberRepository.findMembersByEmail(email);
+        if(member == null)
+            throw new UsernameNotFoundException(email);
+        return member;
+    }
+
+    public MemberResponse getResponse(Members member){
+        return toResponse(member);
+    }
 }

@@ -1,6 +1,6 @@
-package yoon.test.reactTest3.exception;
+package yoon.test.reactTest3.exception.valid;
 
-public class RegisterValidationGroups {
+public class ValidationGroups {
     public interface EmailNotNull {};
     public interface EmailNotFormat{};
     public interface PasswordNotNull{};

@@ -1,4 +1,4 @@
-package yoon.test.reactTest3.config;
+package yoon.test.reactTest3.security.config;
 
 
 import lombok.RequiredArgsConstructor;
@@ -9,12 +9,15 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.FilterChainProxy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import yoon.test.reactTest3.security.jwt.JwtAuthenticationFilter;
+import yoon.test.reactTest3.security.jwt.JwtProvider;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -22,6 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final JwtProvider jwtProvider;
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -36,8 +40,11 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
 
                 .authorizeHttpRequests(auth ->{
-                    auth.anyRequest().permitAll();
+                    auth.requestMatchers("/api/v1/members/*").permitAll();
+                    auth.anyRequest().authenticated();
                 })
+
+                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
 
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
