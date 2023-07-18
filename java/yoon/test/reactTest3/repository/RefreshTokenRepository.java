@@ -8,6 +8,6 @@ import yoon.test.reactTest3.domain.RefreshToken;
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
 
     RefreshToken findRefreshTokenByMember_Email(String email);
-
+    RefreshToken findRefreshTokenByToken(String token);
     boolean existsRefreshTokenByMember_Email(String email);
 }

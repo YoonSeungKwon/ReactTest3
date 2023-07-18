@@ -47,4 +47,5 @@ public class GlobalExceptionHandler {
         System.out.println("error");
         return ResponseEntity.badRequest().body(ErrorCode.USER_AUTHORIZATION_ERROR.getMessage());
     }
+
 }

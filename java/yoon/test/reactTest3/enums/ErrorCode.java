@@ -9,15 +9,20 @@ public enum ErrorCode {
 
     //BAD_REQUEST
 
-    EMAIL_BLANK(400, "이메일을 입력해 주세요"),
+    EMAIL_BLANK(400, "이메일을 입력해 주세요."),
     EMAIL_FORMAT(400, "이메일 형식이 올바르지 않습니다."),
-    PASSWORD_BLANK(400, "비밀번호를 입력해 주세요"),
-    NAME_BLANK(400, "이름을 입력해 주세요"),
+    PASSWORD_BLANK(400, "비밀번호를 입력해 주세요."),
+    NAME_BLANK(400, "이름을 입력해 주세요."),
 
     //USER NOT_FOUND
 
     EMAIL_NOT_FOUND(400, "이메일이 존재하지 않습니다."),
     PASSWORD_NOT_FOUND(400, "이메일 또는 비밀번호가 일치하지 않습니다."),
+
+    //POST BAD_REQUEST
+
+    TITLE_BLANK(400, "글 제목을 입력해 주세요."),
+    CONTENT_BLANK(400, "내용을 입력해 주세요."),
 
     //UNAUTHORIZED
 

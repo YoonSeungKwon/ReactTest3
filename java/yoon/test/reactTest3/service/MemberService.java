@@ -16,8 +16,6 @@ import yoon.test.reactTest3.vo.request.MemberDto;
 import yoon.test.reactTest3.vo.request.MemberRequest;
 import yoon.test.reactTest3.vo.response.MemberResponse;
 
-import java.lang.reflect.Member;
-
 @Service
 @RequiredArgsConstructor
 public class MemberService {

@@ -36,6 +36,7 @@ public class MemberController {
 
     @GetMapping("/{email}/exists")
     public ResponseEntity<String> emailDuplicationCheck(@PathVariable String email){
+        System.out.println(email);
         if(!memberService.checkEmailDuplication(email))
             return ResponseEntity.ok("사용가능한 이메일 주소입니다.");
         return ResponseEntity.badRequest().body(ErrorCode.EMAIL_CONFLICTED.getMessage());

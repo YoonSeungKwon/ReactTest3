@@ -10,7 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import yoon.test.reactTest3.domain.Members;
-import yoon.test.reactTest3.service.MemberService;
+import yoon.test.reactTest3.repository.MemberRepository;
+import yoon.test.reactTest3.repository.RefreshTokenRepository;
 import yoon.test.reactTest3.vo.response.MemberResponse;
 
 import java.util.Date;
@@ -19,30 +20,16 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtProvider {
 
-    private final MemberService memberService;
+    private final MemberRepository memberRepository;
+    private final RefreshTokenRepository tokenRepository;
 
     private String SECRET_KEY = "98YOONSK12YOONSK17";
 
-    private long acc_exp = 30 * 60 * 1000l;
+    private long acc_exp = 1 * 60 * 1000l;
 
     private long ref_exp = 3 * 60 * 60 * 1000l;
 
     public String createAccessToken(MemberResponse member){
-        Claims claims = Jwts.claims()
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + acc_exp));
-        return Jwts.builder()
-                .setHeaderParam("alg", "HS256")
-                .setHeaderParam("typ", "JWT/ACCESS_TOKEN")
-                .setClaims(claims)
-                .claim("email", member.getEmail())
-                .claim("name", member.getName())
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
-                .compact();
-    }
-
-    public String createAccessToken(String token){
-        Members member = memberService.findMemberByEmail(getEmail(token));
         Claims claims = Jwts.claims()
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + acc_exp));
@@ -68,16 +55,27 @@ public class JwtProvider {
                 .compact();
     }
 
+    public String createNewToken(String token){
+        Members member = tokenRepository.findRefreshTokenByToken(token).getMember();
+        Claims claims = Jwts.claims()
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + acc_exp));
+        return Jwts.builder()
+                .setHeaderParam("alg", "HS256")
+                .setHeaderParam("typ", "JWT/ACCESS_TOKEN")
+                .setClaims(claims)
+                .claim("email", member.getEmail())
+                .claim("name", member.getName())
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .compact();
+    }
+
     public String getEmail(String token){
         return (String) Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().get("email");
     }
 
-    public String getName(String token){
-        return (String) Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().get("name");
-    }
-
     public Authentication getAuth(String token){
-        Members member = memberService.findMemberByEmail(getEmail(token));
+        Members member = memberRepository.findMembersByEmail(getEmail(token));
         return new UsernamePasswordAuthenticationToken(member, null, member.getAuthorities());
     }
 
