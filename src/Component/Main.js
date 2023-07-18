@@ -8,6 +8,8 @@ const Main = () =>{
             <Link to="/api/v1/login">Login</Link>
             <br/>
             <Link to="/api/v1/register">Register</Link>
+            <br/>
+            <Link to="/api/v1/test">UserOnly</Link>
         </>
     )
 }
