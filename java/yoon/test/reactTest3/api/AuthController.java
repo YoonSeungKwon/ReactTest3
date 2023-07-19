@@ -15,7 +15,6 @@ public class AuthController {
     public ResponseEntity<Boolean> checkAuth(){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authentication.getAuthorities());
         if(authentication.getAuthorities().toString().equals("[ROLE_ANONYMOUS]")){
             return ResponseEntity.ok(false);
         }

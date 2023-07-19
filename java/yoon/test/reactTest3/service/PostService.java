@@ -41,6 +41,7 @@ public class PostService {
 
     @Transactional
     public PostResponse savePost(PostRequest postRequest){
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         Members member = (Members) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         postRequest.setEmail(member.getEmail());
         Posts post = Posts.builder()
