@@ -4,7 +4,7 @@ const Header = () =>{
     return(
         <>
             <h1>
-                Header
+                Yoon's Page
             </h1>
         </>
     )

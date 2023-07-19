@@ -1,0 +1,11 @@
+.title{margin-top:50px;font-weight: bold;}
+table{margin-top: 50px;width: 500px;}
+.table_index{width:50px;}
+.table_title{width:200px;}
+.table_writer{width:100px;}
+.table_regdate{width:100px;}
+.table_hit{width:50px;}
+.table_head{font-weight: bold;}
+.table_font{font-size: 13px; font-family: "Roboto Light",serif;}
+thead td{border-right:2px solid #cccccc;}
+thead td:last-child{border-right: 0;}

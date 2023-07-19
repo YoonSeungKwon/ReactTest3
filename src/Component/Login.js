@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const Login = () =>{
 
@@ -10,6 +10,7 @@ const Login = () =>{
         email:"",
         password:""
     })
+
 
     const handleChange = (e) =>{
         const {id , value} = e.target
@@ -60,6 +61,8 @@ const Login = () =>{
                 value="Login"
                 onClick={handleClick}
             />
+            <br/>
+            <Link to="/">홈으로</Link>
         </>
     )
 }
